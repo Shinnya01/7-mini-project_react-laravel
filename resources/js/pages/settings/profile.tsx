@@ -42,10 +42,9 @@ export default function Profile({
                     />
 
                     <Form
-                        {...ProfileController.update.form()}
-                        options={{
-                            preserveScroll: true,
-                        }}
+                        method="patch"
+                        action={ProfileController.update.url()}
+                        options={{ preserveScroll: true }}
                         className="space-y-6"
                     >
                         {({ processing, recentlySuccessful, errors }) => (

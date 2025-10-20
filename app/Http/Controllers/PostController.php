@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Post;
 use Inertia\Inertia;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
@@ -13,7 +14,8 @@ class PostController extends Controller
      */
     public function index()
     {
-        return Inertia::render('blog-post');
+        $posts = Post::with('user')->latest()->get();
+        return Inertia::render('blog-post', compact('posts'));
     }
 
     /**
@@ -29,7 +31,19 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+    
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+
+        $post = Post::create([
+            'user_id' => Auth::id(), 
+            'title' => $request->title,
+            'description' => $request->description,
+        ]);
+
+        return redirect()->back();
     }
 
     /**
@@ -51,16 +65,26 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $post)
+    public function update(Request $request, Post $blog_post)
     {
-        //
+        // dd($request->all());
+
+        $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'nullable|string',
+        ]);
+
+        $blog_post->update($request->only('title', 'description'));
+
+        return redirect()->back();
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Post $post)
+    public function destroy(Post $blog_post)
     {
-        //
+        $blog_post->delete();
+        return redirect()->back();
     }
 }
