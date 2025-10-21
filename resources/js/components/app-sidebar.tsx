@@ -34,7 +34,7 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Contact Manager',
-        href: "",
+        href: "/contact-manager",
         icon: SquareUserRound,
     },
     {

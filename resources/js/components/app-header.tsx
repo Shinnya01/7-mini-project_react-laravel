@@ -59,12 +59,12 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Notes App',
-        href: "",
+        href: "/note",
         icon: NotebookPen,
     },
     {
-        title: 'Voting Poll App',
-        href: "",
+        title: 'Voting Rooms',
+        href: "/voting-rooms",
         icon: Vote,
     },
 ];

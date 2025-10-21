@@ -240,21 +240,21 @@ export default function BlogPost({posts: initialPosts }: {posts: Post[] }) {
                                 </div>
                             </div>
                             {post.user_id === currentUserId ? (
-                                <DropdownMenu >
+                            <DropdownMenu >
                                 <DropdownMenuTrigger asChild>
                                 <Button variant="ghost" aria-label="Open menu" size="icon-sm">
                                     <MoreHorizontalIcon />
                                 </Button>
                                 </DropdownMenuTrigger>
                                 <DropdownMenuContent className="w-40" align="end">
-                                <DropdownMenuGroup>
-                                    <DropdownMenuItem onClick={() => setEditingPost(post)}>
-                                    Edit
-                                    </DropdownMenuItem>
-                                    <DropdownMenuItem variant='destructive' onClick={() => handleDelete(post.id)} disabled={deletingId === post.id}>
-                                      {deletingId === post.id ? (<><Spinner/>Deleting...</>) : 'Delete'}
-                                    </DropdownMenuItem>
-                                </DropdownMenuGroup>
+                                    <DropdownMenuGroup>
+                                        <DropdownMenuItem onClick={() => setEditingPost(post)}>
+                                        Edit
+                                        </DropdownMenuItem>
+                                        <DropdownMenuItem variant='destructive' onClick={() => handleDelete(post.id)} disabled={deletingId === post.id}>
+                                        {deletingId === post.id ? (<><Spinner/>Deleting...</>) : 'Delete'}
+                                        </DropdownMenuItem>
+                                    </DropdownMenuGroup>
                                 </DropdownMenuContent>
                             </DropdownMenu>
                             ) : (
