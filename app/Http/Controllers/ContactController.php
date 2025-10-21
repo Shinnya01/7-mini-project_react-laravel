@@ -2,21 +2,21 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Post;
 use Inertia\Inertia;
+use App\Models\Contact;
 use App\Models\Activity;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class PostController extends Controller
+class ContactController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
     public function index()
     {
-        $posts = Post::with('user')->latest()->get();
-        return Inertia::render('blog-post', compact('posts'));
+        $contacts = Contact::all();
+        return Inertia::render('contact-manager', compact('contacts'));
     }
 
     /**
@@ -32,22 +32,23 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-    
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
+
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'phone' => 'required|string',
+            'address' => 'nullable|string|max:500',
         ]);
 
-        $post = Post::create([
+        $contact = Contact::create([
             'user_id' => Auth::id(), 
-            'title' => $request->title,
-            'description' => $request->description,
+            ...$validated,
         ]);
-        
+
         Activity::create([
             'user_id' => auth()->id(),
-            'type' => 'blog_post',
-            'description' => 'New blog post created',
+            'type' => 'contact_manager',
+            'description' => 'new contact created',
         ]);
 
         return redirect()->back();
@@ -56,7 +57,7 @@ class PostController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Post $post)
+    public function show(Contact $contact)
     {
         //
     }
@@ -64,7 +65,7 @@ class PostController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Post $post)
+    public function edit(Contact $contact)
     {
         //
     }
@@ -72,16 +73,16 @@ class PostController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, Post $blog_post)
+    public function update(Request $request, Contact $contact_manager)
     {
-        // dd($request->all());
-
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'description' => 'nullable|string',
+        $validated = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email',
+            'phone' => 'required|string',
+            'address' => 'nullable|string|max:500',
         ]);
 
-        $blog_post->update($request->only('title', 'description'));
+        $contact_manager->update($validated);
 
         return redirect()->back();
     }
@@ -89,9 +90,9 @@ class PostController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Post $blog_post)
+    public function destroy(Contact $contact_manager)
     {
-        $blog_post->delete();
+        $contact_manager->delete();
         return redirect()->back();
     }
 }

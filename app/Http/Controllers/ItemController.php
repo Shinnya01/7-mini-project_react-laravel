@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Item;
 use Inertia\Inertia;
+use App\Models\Activity;
 use Illuminate\Http\Request;
 
 class ItemController extends Controller
@@ -23,6 +24,12 @@ class ItemController extends Controller
         ]);
 
         Item::create($request->only('title', 'description', 'status'));
+
+        Activity::create([
+            'user_id' => auth()->id(),
+            'type' => 'to_do',
+            'description' => 'New to do list created',
+        ]);
 
         return redirect()->back();
     }

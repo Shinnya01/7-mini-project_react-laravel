@@ -190,7 +190,7 @@ export default function ToDoList({ items: initialItems }: { items: TodoItem[] })
                     <TableRow key={item.id}>
                         <TableCell>{index + 1}</TableCell> 
                         <TableCell>{item.title}</TableCell>
-                        <TableCell>{item.description}</TableCell>
+                        <TableCell className='max-w-lg truncate'>{item.description}</TableCell>
                         <TableCell>
                             {item.status === 'pending' ? (
                                 <span className="px-2 py-1 bg-yellow-200 text-yellow-800 rounded">Pending</span>

@@ -59,6 +59,7 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { Spinner } from '@/components/ui/spinner';
+
 type Post = {
   id: number;
   user_id?: number;
@@ -160,7 +161,7 @@ export default function BlogPost({posts: initialPosts }: {posts: Post[] }) {
                                         <AvatarFallback>CN</AvatarFallback>
                                     </Avatar>
                                     <div>
-                                        <p className='text-white'>Shinya01</p>
+                                        <p className='text-white'>{auth.user.name}</p>
                                         <p className='text-xs'>
                                             {new Date().toLocaleString('en-US', {
                                                 month: 'long',
@@ -271,7 +272,7 @@ export default function BlogPost({posts: initialPosts }: {posts: Post[] }) {
                         <Separator className='-my-5'/>
                         <ButtonGroup className='!m-0 !p-0 w-full grid grid-cols-2'>
                             
-                            <Button variant="ghost" ><ThumbsUp/> Like</Button>
+                            <Button variant="ghost" className='text-blue-800 hover:text-blue-800'><ThumbsUp className='text-blue-800 fill-blue-800 size-5'/> Like</Button>
                             <Button variant="ghost" ><MessageCircle/> Comment</Button>
                         </ButtonGroup>
                     </Card>
