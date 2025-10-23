@@ -146,7 +146,8 @@ export default function ContactManager({contacts: initialContacts}: {contacts: C
                 </div>
 
                 <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-                    {contacts.map((contact) => (
+                    {contacts.length > 0 ? (
+                    contacts.map((contact) => (
                     <Card key={contact.id}>
                         <CardHeader>
                         <CardTitle>{contact.name}</CardTitle>
@@ -166,7 +167,11 @@ export default function ContactManager({contacts: initialContacts}: {contacts: C
                         </div>
                         </CardContent>
                     </Card>
-                    ))}
+                    ))
+                    ) : (
+                        <p className='text-center text-gray-400 col-span-3'>No contact yet.</p>
+                    )}
+                    
                 </div>
             </div>
         </AppLayout>

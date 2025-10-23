@@ -12,5 +12,7 @@ class VotingRoom extends Model
         'description',
         'status',
         'privacy',
+        'start_time',
+        'end_time',
     ];
 }

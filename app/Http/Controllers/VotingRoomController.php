@@ -33,11 +33,14 @@ class VotingRoomController extends Controller
      */
     public function store(Request $request)
     {
+
         $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'nullable|string',
-            'status' => 'nullable|in:open,closed',
+            // 'status' => 'nullable|in:open,closed',
             'privacy' => 'nullable|in:public,private',
+            'start_time' => 'nullable|date|after:now',
+            'end_time' => 'nullable|date|after_or_equal:start_time',
         ]);
 
         $voting = VotingRoom::create([
@@ -46,6 +49,8 @@ class VotingRoomController extends Controller
             'description' => $request->description,
             'status' => $request->status ?? 'open',
             'privacy' => $request->privacy ?? 'public',
+            'start_time' => $request->start_time,
+            'end_time' => $request->end_time,
         ]);
 
         Activity::create([
@@ -65,6 +70,7 @@ class VotingRoomController extends Controller
         $room = [
             'id' => 1,
             'title' => 'Student Council Election 2025',
+            'description' => 'lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.',
             'positions' => [
                 [
                     'id' => 1,

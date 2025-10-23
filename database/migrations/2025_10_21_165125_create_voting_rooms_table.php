@@ -18,6 +18,8 @@ return new class extends Migration
             $table->text('description')->nullable();
             $table->enum('status', ['open', 'closed'])->default('open');
             $table->enum('privacy', ['public', 'private'])->default('public');
+            $table->timestamp('start_time')->nullable();
+            $table->timestamp('end_time')->nullable();
             $table->timestamps();
         });
     }

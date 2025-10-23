@@ -170,26 +170,29 @@ export default function Dashboard() {
                                 >
                                 <AreaChart data={filteredData}>
                                     <defs>
-                                    <linearGradient id="fillTo_do" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="var(--color-to_do)" stopOpacity={0.8} />
-                                        <stop offset="95%" stopColor="var(--color-to_do)" stopOpacity={0.1} />
-                                    </linearGradient>
-                                    <linearGradient id="fillBlog_post" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="var(--color-blog_post)" stopOpacity={0.8} />
-                                        <stop offset="95%" stopColor="var(--color-blog_post)" stopOpacity={0.1} />
-                                    </linearGradient>
-                                    <linearGradient id="fillContact_manager" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="var(--color-contact_manager)" stopOpacity={0.8} />
-                                        <stop offset="95%" stopColor="var(--color-contact_manager)" stopOpacity={0.1} />
-                                    </linearGradient>
-                                    <linearGradient id="fillNote" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="var(--color-note)" stopOpacity={0.8} />
-                                        <stop offset="95%" stopColor="var(--color-note)" stopOpacity={0.1} />
-                                    </linearGradient>
-                                    <linearGradient id="fillVoting" x1="0" y1="0" x2="0" y2="1">
-                                        <stop offset="5%" stopColor="var(--color-voting)" stopOpacity={0.8} />
-                                        <stop offset="95%" stopColor="var(--color-voting)" stopOpacity={0.1} />
-                                    </linearGradient>
+                                    {Object.keys(chartConfig)
+                                        .filter((key) => key !== "visitors") // skip visitors if you want
+                                        .map((key) => (
+                                        <linearGradient
+                                            key={key}
+                                            id={`fill-${key}`}
+                                            x1="0"
+                                            y1="0"
+                                            x2="0"
+                                            y2="1"
+                                        >
+                                            <stop
+                                            offset="5%"
+                                            stopColor={`var(--color-${key})`}
+                                            stopOpacity={0.8}
+                                            />
+                                            <stop
+                                            offset="95%"
+                                            stopColor={`var(--color-${key})`}
+                                            stopOpacity={0.1}
+                                            />
+                                        </linearGradient>
+                                        ))}
                                     </defs>
                                     <CartesianGrid vertical={false} />
                                     <XAxis
@@ -198,6 +201,7 @@ export default function Dashboard() {
                                     axisLine={false}
                                     tickMargin={8}
                                     minTickGap={32}
+                                    interval="preserveStartEnd"
                                     tickFormatter={(value) => {
                                         const date = new Date(value)
                                         return date.toLocaleDateString("en-US", {
@@ -220,41 +224,18 @@ export default function Dashboard() {
                                         />
                                     }
                                     />
-                                    <Area
-                                    dataKey="to_do"
-                                    type="natural"
-                                    fill="url(#fillTo_do)"
-                                    stroke="var(--color-to_do)"
-                                    stackId="a"
-                                    />
-                                    <Area
-                                    dataKey="blog_post"
-                                    type="natural"
-                                    fill="url(#fillBlog_post)"
-                                    stroke="var(--color-blog_post)"
-                                    stackId="a"
-                                    />
-                                    <Area
-                                    dataKey="contact_manager"
-                                    type="natural"
-                                    fill="url(#fillContact_manager)"
-                                    stroke="var(--color-contact_manager)"
-                                    stackId="a"
-                                    />
-                                    <Area
-                                    dataKey="note"
-                                    type="natural"
-                                    fill="url(#fillNote)"
-                                    stroke="var(--color-note)"
-                                    stackId="a"
-                                    />
-                                    <Area
-                                    dataKey="voting"
-                                    type="natural"
-                                    fill="url(#fillVoting)"
-                                    stroke="var(--color-voting)"
-                                    stackId="a"
-                                    />
+                                    {Object.keys(chartConfig)
+                                        .filter((key) => key !== "visitors")
+                                        .map((key) => (
+                                            <Area
+                                            key={key}
+                                            dataKey={key}
+                                            type="natural"
+                                            fill={`url(#fill-${key})`}
+                                            stroke={`var(--color-${key})`}
+                                            stackId="a"
+                                            />
+                                        ))}
                                     <ChartLegend content={<ChartLegendContent />} />
                                 </AreaChart>
                                 </ChartContainer>

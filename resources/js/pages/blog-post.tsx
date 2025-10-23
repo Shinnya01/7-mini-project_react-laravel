@@ -217,7 +217,9 @@ export default function BlogPost({posts: initialPosts }: {posts: Post[] }) {
                 </DialogContent>
             </Dialog>
                 <div className='flex flex-col space-y-4'>
-                    {posts.map((post: any) => (
+                    {posts.length > 0 ? ( 
+
+                    posts.map((post: any) => (
                     <Card className='w-full p-2' key={post.id}>
                         <div className='flex justify-between'>
                             <div className='flex gap-2 items-center'>
@@ -276,8 +278,12 @@ export default function BlogPost({posts: initialPosts }: {posts: Post[] }) {
                             <Button variant="ghost" ><MessageCircle/> Comment</Button>
                         </ButtonGroup>
                     </Card>
-                    ))}
-                    
+                    ))
+
+                    ) : (
+                        <p className='text-center text-gray-400'>No posts yet.</p>
+                    )
+                    }
                 </div>
                 
             </div>

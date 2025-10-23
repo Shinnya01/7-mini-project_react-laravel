@@ -71,7 +71,8 @@ export default function Notes({notes: initialNotes}: {notes: Note[]}) {
         </div>
 
         <div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-4">
-          {notes.map(note => (
+          {notes.length > 0 ? (
+          notes.map(note => (
             <Card
               key={note.id}
               className="cursor-pointer hover:shadow-lg transition"
@@ -87,7 +88,10 @@ export default function Notes({notes: initialNotes}: {notes: Note[]}) {
                 </p>
               </CardContent>
             </Card>
-          ))}
+          ))
+          ) : (
+              <p className='text-center text-gray-400 col-span-3'>No notes yet.</p>
+          )}
         </div>
       </div>
     </AppLayout>

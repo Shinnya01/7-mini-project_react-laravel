@@ -1,11 +1,12 @@
 import AppLayout from '@/layouts/app-layout';
 import { Head, usePage } from '@inertiajs/react';
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { useState } from 'react';
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { Label } from "@/components/ui/label";
 import { Progress } from "@/components/ui/progress";
+import { Ellipsis } from 'lucide-react';
 
 type Candidate = {
   id: number;
@@ -23,6 +24,7 @@ type Position = {
 type VotingRoom = {
   id: number;
   title: string;
+  description: string;
   positions: Position[];
 };
 
@@ -94,8 +96,12 @@ export default function ShowVotingRoom() {
       <Head title={room.title} />
       <div className="flex justify-center p-6">
         <Card className="w-full max-w-3xl">
-          <CardHeader>
-            <CardTitle className="text-2xl font-bold">{room.title}</CardTitle>
+          <CardHeader className='grid grid-cols-[1fr_auto] items-start'>
+            <div>
+              <CardTitle className="text-2xl font-bold">{room.title}</CardTitle>
+              <CardDescription className="">{room.description}</CardDescription>
+            </div>
+            <Ellipsis/>
           </CardHeader>
           <CardContent>
             {!submitted ? (
