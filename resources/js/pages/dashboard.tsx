@@ -54,10 +54,10 @@ const chartConfig = {
     label: "Note",
     color: "var(--chart-4)",
   },
-  voting: {
-    label: "Voting",
-    color: "var(--chart-5)",
-  },
+//   voting: {
+//     label: "Voting",
+//     color: "var(--chart-5)",
+//   },
 } satisfies ChartConfig
 
 const breadcrumbs: BreadcrumbItem[] = [
@@ -68,13 +68,13 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function Dashboard() {
-    const { contacts, items, posts, users, notes, voting, chartData } = usePage().props as unknown as {
+    const { contacts, items, posts, users, notes, chartData } = usePage().props as unknown as {
         contacts: number;
         items: number;
         posts: number;
         users: number;
         notes: number;
-        voting: number;
+        // voting: number;
         chartData: {
             date: string
             to_do: number
@@ -85,7 +85,7 @@ export default function Dashboard() {
         }[]
     };
 
-    const data = { users, items, posts, contacts, notes, voting };
+    const data = { users, items, posts, contacts, notes };
 
     const modules = [
         { key: 'users', title: 'Total Users', description: 'Total number of registered users.', detail: 'User registrations are increasing steadily.' },
@@ -93,21 +93,24 @@ export default function Dashboard() {
         { key: 'posts', title: 'Blog Posts Published', description: 'Total blog posts published by users.', detail: 'Engagement through content publishing is growing.' },
         { key: 'contacts', title: 'Contacts Added', description: 'Total contacts stored or managed by users.', detail: 'Reflects user networking and CRM activity.' },
         { key: 'notes', title: 'Total Notes', description: 'Total contacts stored or managed by users.', detail: 'Reflects user networking and CRM activity.' },
-        { key: 'voting', title: 'Total Voting', description: 'Total contacts stored or managed by users.', detail: 'Reflects user networking and CRM activity.' },
+        // { key: 'voting', title: 'Total Voting', description: 'Total contacts stored or managed by users.', detail: 'Reflects user networking and CRM activity.' },
     ];
 
     const [timeRange, setTimeRange] = React.useState("90d")
     const filteredData = chartData.filter((item) => {
         const date = new Date(item.date)
-        const referenceDate = new Date("2024-06-30")
+        const today = new Date() // use today as reference
         let daysToSubtract = 90
+
         if (timeRange === "30d") {
-        daysToSubtract = 30
+            daysToSubtract = 30
         } else if (timeRange === "7d") {
-        daysToSubtract = 7
+            daysToSubtract = 7
         }
-        const startDate = new Date(referenceDate)
-        startDate.setDate(startDate.getDate() - daysToSubtract)
+
+        const startDate = new Date()
+        startDate.setDate(today.getDate() - daysToSubtract)
+
         return date >= startDate
     })
 

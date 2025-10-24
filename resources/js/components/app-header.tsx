@@ -32,42 +32,51 @@ import { cn } from '@/lib/utils';
 import { dashboard } from '@/routes';
 import { type BreadcrumbItem, type NavItem, type SharedData } from '@/types';
 import { Link, usePage } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid, Menu, Search, List, Rss, SquareUserRound, NotebookPen, Vote } from 'lucide-react';
+import { BookOpen, Folder, LayoutGrid, Menu, Search, List, Rss, SquareUserRound, NotebookPen, Vote, Users } from 'lucide-react';
 import AppLogo from './app-logo';
 import AppLogoIcon from './app-logo-icon';
 
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: dashboard(),
-        icon: LayoutGrid,
-    },
+const getMainNavItems = (role: string): NavItem[] => {
+    const items: NavItem[] = [
         {
-        title: 'To Do List',
-        href: '/to-do-list',
-        icon: List,
-    },
-    {
-        title: 'Blog',
-        href: "/blog-post",
-        icon: Rss,
-    },
-    {
-        title: 'Contact Manager',
-        href: "/contact-manager",
-        icon: SquareUserRound,
-    },
-    {
-        title: 'Notes App',
-        href: "/note",
-        icon: NotebookPen,
-    },
-    {
-        title: 'Voting Rooms',
-        href: "/voting-rooms",
-        icon: Vote,
-    },
-];
+            title: 'Dashboard',
+            href: dashboard(),
+            icon: LayoutGrid,
+        },
+        {
+            title: 'To Do List',
+            href: '/to-do-list',
+            icon: List,
+        },
+        {
+            title: 'Blog',
+            href: "/blog-post",
+            icon: Rss,
+        },
+        {
+            title: 'Contact Manager',
+            href: "/contact-manager",
+            icon: SquareUserRound,
+        },
+        {
+            title: 'Notes App',
+            href: "/note",
+            icon: NotebookPen,
+        },
+    ];
+
+    // ✅ Add Manage Users if admin
+    if (role === 'admin') {
+        items.push({
+            title: 'Manage Users',
+            href: '/manage-user',
+            icon: Users, // you can replace with any icon you want
+        });
+    }
+
+    return items;
+};
+
 
 const rightNavItems: NavItem[] = [
     {
@@ -93,9 +102,11 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
     const page = usePage<SharedData>();
     const { auth } = page.props;
     const getInitials = useInitials();
+    const mainNavItems = getMainNavItems(auth.user.role as string);
+
     return (
         <>
-            <div className="border-b border-sidebar-border/80">
+            <div className="sticky top-0 bg-black z-999 order-b border-sidebar-border/80">
                 <div className="mx-auto flex h-16 items-center px-4 md:max-w-7xl">
                     {/* Mobile Menu */}
                     <div className="lg:hidden">
@@ -178,9 +189,9 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                     </Link>
 
                     {/* Desktop Navigation */}
-                    <div className="ml-6 hidden h-full items-center space-x-6 lg:flex">
-                        <NavigationMenu className="flex h-full items-stretch">
-                            <NavigationMenuList className="flex h-full items-stretch space-x-2">
+                    <div className="hidden lg:flex flex-1 justify-center items-center space-x-6">
+                        <NavigationMenu className="flex h-full items-center">
+                            <NavigationMenuList className="flex h-full items-center space-x-2">
                                 {mainNavItems.map((item, index) => (
                                     <NavigationMenuItem
                                         key={index}
@@ -191,12 +202,10 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                                             className={cn(
                                                 navigationMenuTriggerStyle(),
                                                 page.url ===
-                                                    (typeof item.href ===
-                                                    'string'
+                                                    (typeof item.href === 'string'
                                                         ? item.href
-                                                        : item.href.url) &&
-                                                    activeItemStyles,
-                                                'h-9 cursor-pointer px-3',
+                                                        : item.href.url) && activeItemStyles,
+                                                'h-9 cursor-pointer px-3'
                                             )}
                                         >
                                             {item.icon && (
@@ -215,6 +224,7 @@ export function AppHeader({ breadcrumbs = [] }: AppHeaderProps) {
                             </NavigationMenuList>
                         </NavigationMenu>
                     </div>
+
 
                     <div className="ml-auto flex items-center space-x-2">
                         <div className="relative flex items-center space-x-1">

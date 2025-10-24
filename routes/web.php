@@ -13,6 +13,7 @@ use App\Http\Controllers\ItemController;
 use App\Http\Controllers\NoteController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\ContactController;
+use App\Http\Controllers\ManageUserController;
 use App\Http\Controllers\VotingRoomController;
 
 Route::get('/', function () {
@@ -29,7 +30,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
             DB::raw('SUM(CASE WHEN type = "blog_post" THEN 1 ELSE 0 END) as blog_post'),
             DB::raw('SUM(CASE WHEN type = "contact_manager" THEN 1 ELSE 0 END) as contact_manager'),
             DB::raw('SUM(CASE WHEN type = "note" THEN 1 ELSE 0 END) as note'),
-            DB::raw('SUM(CASE WHEN type = "voting" THEN 1 ELSE 0 END) as voting')
         )
         ->groupBy('date')
         ->orderBy('date')
@@ -39,10 +39,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         $items = Item::count();
         $posts = Post::count();
         $users = User::count();
-        $voting = VotingRoom::count();
         $notes = Note::count();
 
-        return Inertia::render('dashboard', compact('contacts', 'items', 'posts', 'users', 'notes', 'voting' ,'chartData'));
+        return Inertia::render('dashboard', compact('contacts', 'items', 'posts', 'users', 'notes','chartData'));
     })->name('dashboard');
 
     Route::resource('to-do-list', ItemController::class);
@@ -50,6 +49,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::resource('contact-manager', ContactController::class);
     Route::resource('note', NoteController::class);
     Route::resource('voting-rooms', VotingRoomController::class);
+    Route::resource('manage-user', ManageUserController::class);
 });
 
 require __DIR__.'/settings.php';

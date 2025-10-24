@@ -6,6 +6,7 @@ use App\Models\Item;
 use Inertia\Inertia;
 use App\Models\Activity;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
 
 class ItemController extends Controller
 {
@@ -18,7 +19,7 @@ class ItemController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
+            'title' => 'required|string|max:255|unique:items,title',
             'description' => 'nullable|string',
             'status' => 'required|string|in:pending,ongoing,done',
         ]);
@@ -34,11 +35,17 @@ class ItemController extends Controller
         return redirect()->back();
     }
 
+
     // Notice the parameter name matches the route: {to_do_list}
     public function update(Request $request, Item $to_do_list)
     {
         $request->validate([
-            'title' => 'required|string|max:255',
+            'title' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('items', 'title')->ignore($to_do_list->id),
+            ],
             'description' => 'nullable|string',
             'status' => 'required|string|in:pending,ongoing,done',
         ]);
